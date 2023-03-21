@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    This Post Title
+    {{identified_post.title}}
 {% endblock  %}
 
 {% block css_files %}
@@ -11,20 +11,17 @@
 
 {% block content %}
     <section id='summary'>
-        <h2>Post Title</h2>
+        <h2>{{ identified_post.title }}</h2>
         <article>
-            <img src="{% static "blog/images/mountains.jpg"%}" alt="Post Title">
-            <address>By Devil</address>
+            <img src="{% static "blog/images/"|add:identified_post.image%}" alt=identified_post.title>
+            <address>{{ identified_post.author }}</address>
             <div>
-                Last Updated on <time>July 10th</time>
+                Last Updated on <time>{{ identified_post.date }}</time>
             </div>
         </article>
     </section>
 
     <main>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab rerum neque a, autem quaerat distinctio velit dignissimos cumque officia ipsum vel sed laborum repellendus, sunt dolor blanditiis, eos consectetur assumenda?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab rerum neque a, autem quaerat distinctio velit dignissimos cumque officia ipsum vel sed laborum repellendus, sunt dolor blanditiis, eos consectetur assumenda?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab rerum neque a, autem quaerat distinctio velit dignissimos cumque officia ipsum vel sed laborum repellendus, sunt dolor blanditiis, eos consectetur assumenda?</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab rerum neque a, autem quaerat distinctio velit dignissimos cumque officia ipsum vel sed laborum repellendus, sunt dolor blanditiis, eos consectetur assumenda?</p>
+        {{ identified_post.content|linebreaks }}
     </main>
 {% endblock  %}
