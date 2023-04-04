@@ -29,4 +29,18 @@
     <main>
         {{ identified_post.content|linebreaks }}
     </main>
+
+    <section id = "comment-form">
+        <h2>Your Comment</h2>
+        <form>
+            {% for form_fiels in comment_form %}
+                <div class = "form-control">
+                    {{ form_fiels.label_tag }}
+                    {{ form_fiels }}
+                    {{ form_fiels.error }}
+                </div>
+            {% endfor %}
+            <button>Save Comment</button>
+        </form>
+    </section>
 {% endblock  %}
