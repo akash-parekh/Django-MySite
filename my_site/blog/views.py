@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import TemplateView, DetailView, ListView
 from .models import Post
 
 all_posts = Post.objects.all()
@@ -10,24 +11,32 @@ all_posts = Post.objects.all()
 
 # Create your views here.
 
+class StartingPageView(ListView):
+    template_name = "blog/index.html"
+    model = Post
+    ordering = ["-date"]
+    context_object_name = "posts"
 
-def starting_page(request):
-    latest_posts = all_posts.order_by("-date")[:3]
-    return render(request, "blog/index.html", {
-        "posts": latest_posts
-    })
-
-
-def posts(request):
-    return render(request, "blog/all-posts.html",{
-        "posts":all_posts
-    })
+    def get_queryset(self):
+        queryset =  super().get_queryset()
+        data = queryset[:3]
+        return data
 
 
-def post_details(request, slug):
-    identified_post = get_object_or_404(Post, slug=slug)
-    # identified_post = next(post for post in all_posts if post['slug'] == slug)
-    return render(request, "blog/post-detail.html", {
-        "identified_post":identified_post,
-        "post_tags":identified_post.caption.all()
-    })
+class AllPostsView(ListView):
+    template_name = "blog/all-posts.html"
+    model = Post
+    ordering = ["-date"]
+    context_object_name = "posts"
+
+
+class PostDetailView(DetailView):
+    template_name = 'blog/post-detail.html'
+    model = Post
+    context_object_name = "identified_post"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post_tags"] = self.object.caption.all()
+        return context
+
